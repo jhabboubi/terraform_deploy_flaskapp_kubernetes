@@ -27,7 +27,7 @@ resource "kubernetes_namespace" "flaskapp" {
 resource "kubernetes_deployment" "flaskapp" {
   metadata {
     namespace = kubernetes_namespace.flaskapp.metadata.0.name
-    name = "scalable-nginx-example"
+    name      = "scalable-nginx-example"
     labels = {
       App = "ScalableNginxExample"
     }
@@ -66,11 +66,16 @@ resource "kubernetes_deployment" "flaskapp" {
       }
     }
   }
+  timeouts {
+    create = "3m"
+    update = "3m"
+    delete = "5m"
+  }
 }
 resource "kubernetes_service" "nginx" {
   metadata {
     namespace = kubernetes_namespace.flaskapp.metadata.0.name
-    name = "nginx-example"
+    name      = "nginx-example"
   }
   spec {
     selector = {
