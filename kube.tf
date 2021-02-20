@@ -9,9 +9,24 @@ provider "kubernetes" {
   config_path = "~/.kube/config"
 }
 
+resource "kubernetes_namespace" "flaskapp" {
+  metadata {
+    annotations = {
+      name = "flaskapp"
+    }
+
+    labels = {
+      App = "ScalableNginxExample"
+    }
+
+    name = "flaskapp"
+  }
+}
+
 
 resource "kubernetes_deployment" "flaskapp" {
   metadata {
+    namespace = kubernetes_namespace.flaskapp.metadata.0.name
     name = "scalable-nginx-example"
     labels = {
       App = "ScalableNginxExample"
@@ -54,6 +69,7 @@ resource "kubernetes_deployment" "flaskapp" {
 }
 resource "kubernetes_service" "nginx" {
   metadata {
+    namespace = kubernetes_namespace.flaskapp.metadata.0.name
     name = "nginx-example"
   }
   spec {
