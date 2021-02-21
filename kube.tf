@@ -27,22 +27,22 @@ resource "kubernetes_namespace" "flaskapp" {
 resource "kubernetes_deployment" "flaskapp" {
   metadata {
     namespace = kubernetes_namespace.flaskapp.metadata.0.name
-    name      = "scalable-nginx-example"
+    name      = "flaskapp"
     labels = {
-      App = "ScalableNginxExample"
+      App = "flaskapp"
     }
   }
   spec {
-    replicas = 4
+    replicas = 3
     selector {
       match_labels = {
-        App = "ScalableNginxExample"
+        App = "flaskapp"
       }
     }
     template {
       metadata {
         labels = {
-          App = "ScalableNginxExample"
+          App = "flaskapp"
         }
       }
       spec {
@@ -72,10 +72,10 @@ resource "kubernetes_deployment" "flaskapp" {
     delete = "2m"
   }
 }
-resource "kubernetes_service" "nginx" {
+resource "kubernetes_service" "flaskapp" {
   metadata {
     namespace = kubernetes_namespace.flaskapp.metadata.0.name
-    name      = "nginx-example"
+    name      = "flaskapp"
   }
   spec {
     selector = {
