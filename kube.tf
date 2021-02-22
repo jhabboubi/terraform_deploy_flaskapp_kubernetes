@@ -33,7 +33,7 @@ resource "kubernetes_deployment" "flaskapp" {
     }
   }
   spec {
-    replicas = 3
+    replicas = 10
     selector {
       match_labels = {
         App = "flaskapp"
@@ -52,16 +52,7 @@ resource "kubernetes_deployment" "flaskapp" {
           port {
             container_port = 80
           }
-          resources {
-            limits = {
-              cpu    = "0.5"
-              memory = "512Mi"
-            }
-            requests = {
-              cpu    = "250m"
-              memory = "128Mi"
-            }
-          }
+        
         }
       }
     }
